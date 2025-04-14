@@ -29,7 +29,7 @@
     #v(4.5em)
     
     // Logo
-    #image("assets/bupt-logo.png", width: 40%)
+    #image("assets/bupt-logo.jpg", width: 40%)
     #v(8em)
     
    // 学生信息表格
