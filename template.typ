@@ -74,7 +74,7 @@
     show heading.where(level: 2): it => [
     #set align(left)
     #set par(first-line-indent: 0em)
-    #set text(font: ("Times New Roman", "SimHei"), size: 14pt, weight: "bold")
+    #set text(font: ("Times New Roman", "SimHei"), size: 14pt, weight: "bold") // 四号字
     #counter(heading.where(level: 2)).step()
     #counter(heading.where(level: 3)).update(0)
     #let num = counter(heading.where(level: 2)).get().at(0) + 1
@@ -85,7 +85,7 @@
     show heading.where(level: 3): it => [
     #set align(left)
     #set par(first-line-indent: 2em)
-    #set text(font: ("Times New Roman", "SimHei"), size: 12pt, weight: "bold")
+    #set text(font: ("Times New Roman", "SimHei"), size: 12pt, weight: "bold") //小四号字
     #counter(heading.where(level: 3)).step()
     #let two_head = counter(heading.where(level: 2)).get().at(0)
     #let num = counter(heading.where(level: 3)).get().at(0) + 1
@@ -96,6 +96,7 @@
   //   // 重置段落缩进，确保标题后的第一段不缩进
   //   par(first-line-indent: 0em)[#it.body]
   // }
+  set text(font: ("Times New Roman", "SimHei"), size: 12pt, weight: "regular")
   set par(first-line-indent: 2em,leading: 1.2em)
   show raw.where(block: true): block => [
     #pad(left: 2.5em)[
