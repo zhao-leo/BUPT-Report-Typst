@@ -1,3 +1,8 @@
+// 设置页面格式
+#import "@preview/cuti:0.3.0": show-cn-fakebold
+#import "cover.typ": generate-cover
+#show: show-cn-fakebold
+
 #let experiment-report(
   title: "",
   semester: "",
@@ -5,104 +10,91 @@
   student-id: "",
   class: "",
   date: "",
-  body
+  body,
 ) = {
-  // 设置页面格式
+  
+  // 初始化相关页面、文本和段落样式
   set page(
     paper: "a4",
     margin: (top: 2.54cm, bottom: 2.54cm, left: 3.18cm, right: 3.18cm),
   )
-  set text(lang: "zh")
-  import "@preview/cuti:0.3.0": show-cn-fakebold
-  show: show-cn-fakebold
+  set text(
+    font: ("Times New Roman", "SimHei"),
+    size: 12pt,
+    weight: "regular",
+    lang: "zh"
+  )
+  set par(first-line-indent: (amount:2em,all:true), leading: 1.2em)
+  
   // 封面页
+  generate-cover(
+    title,
+    semester,
+    class,
+    name,
+    student-id,
+    date,
+  )
+
+  // 图表标题样式
   show figure.caption: it => {
-    set text(font: ("Times New Roman", "FangSong"), size: 9pt)
-    it
+    text(font: ("Times New Roman", "FangSong"), size: 9pt)[#it.body]
   }
-  align(center)[
-    #v(4em)
-    // 第一行：学年学期
-    #text(size: 22pt,font: "STZhongsong",weight: "bold")[#semester]
 
-    // 第二行：实验报告标题
-    #text(size: 22pt,font:"STZhongsong",weight: "bold")[#title]
-    #v(4.5em)
-    
-    // Logo
-    #image("assets/bupt-logo.jpg", width: 40%)
-    #v(8em)
-    
-   // 学生信息表格
-    #let info-row(label, content) = {
-      grid(
-        columns: (auto, auto),
-        align(right)[#text(font: "STSong",size: 14pt)[#label]],
-        [
-          #box(width: 180pt)[
-            #set text(font: "STSong",size: 14pt)
-            #box(width: 180pt)[
-              #place(dx: 0pt, dy: 14pt)[#line(length: 180pt)]
-              #align(center)[#content]
-            ]
-          ]
-        ]
-      )
-    }
-    
-    #set text(font: "STSong", size: 14pt)
-    #grid(
-      align: center,
-      rows: 4,
-      row-gutter: 2em,
-      info-row("专业班级", class),
-      info-row("姓　　名", name),
-      info-row("学　　号", student-id),
-      info-row("报告日期", date)
-    )
-  ]
-  pagebreak()
-
-    show heading.where(level: 1): it => [
-    #set par(first-line-indent: 0em)
-    #set align(center)
-    #set text(font: ("Times New Roman", "SimHei"), size: 16pt, weight: "bold")
-    #v(12pt)
-    #it.body
-    #v(20pt)
+  // 一级标题样式
+  show heading.where(level: 1): it => [
+    #align(center)[
+      #v(12pt)
+      #par(first-line-indent: (amount:0em,all:true))[
+        #text(font: ("Times New Roman", "SimHei"), size: 16pt, weight: "bold")[#it.body]
+      ]
+      #v(20pt)
+    ]
   ]
 
-    show heading.where(level: 2): it => [
-    #set align(left)
-    #set par(first-line-indent: 0em)
-    #set text(font: ("Times New Roman", "SimHei"), size: 14pt, weight: "bold") // 四号字
+  // 二级标题样式
+  show heading.where(level: 2): it => [
+    // 计算二级标题的编号
     #counter(heading.where(level: 2)).step()
     #counter(heading.where(level: 3)).update(0)
     #let num = counter(heading.where(level: 2)).get().at(0) + 1
-    #numbering("一、",num)
-    #it.body
+    
+    // 二级标题样式具体设置
+    #align(left)[
+      #par(first-line-indent: (amount:0em,all:true))[
+        #text(font: ("Times New Roman", "SimHei"), size: 14pt, weight: "bold")[
+          #numbering("一、", num)
+          #it.body
+        ]
+      ]
+    ]
   ]
 
-    show heading.where(level: 3): it => [
-    #set align(left)
-    #set par(first-line-indent: 2em)
-    #set text(font: ("Times New Roman", "SimHei"), size: 12pt, weight: "bold") //小四号字
+  // 三级标题样式
+  show heading.where(level: 3): it => [
+    // 计算三级标题的编号
     #counter(heading.where(level: 3)).step()
     #let two_head = counter(heading.where(level: 2)).get().at(0)
     #let num = counter(heading.where(level: 3)).get().at(0) + 1
-    #numbering("1.1",two_head,num)
-    #it.body
+
+    // 三级标题样式具体设置
+    #align(left)[
+      #par(first-line-indent: (amount:2em,all:true))[
+        #text(font: ("Times New Roman", "SimHei"), size: 12pt, weight: "bold")[
+          #numbering("1.1", two_head, num)
+          #it.body
+        ]
+      ]
+    ]
   ]
-  // show heading: it => {
-  //   // 重置段落缩进，确保标题后的第一段不缩进
-  //   par(first-line-indent: 0em)[#it.body]
-  // }
-  set text(font: ("Times New Roman", "SimHei"), size: 12pt, weight: "regular")
-  set par(first-line-indent: 2em,leading: 1.2em)
+
+  // 代码标题样式
   show raw.where(block: true): block => [
     #pad(left: 2.5em)[
       #block
     ]
   ]
+
+  // 主体文档
   body
 }

@@ -1,4 +1,4 @@
-#import "@preview/simple-bupt-report:0.1.0": experiment-report
+#import "@preview/simple-bupt-report:0.1.1": experiment-report
 
 #show: doc => experiment-report(
   title: "《信号处理实验》实验报告",
@@ -31,7 +31,12 @@
 === 码上使用过程
 写明码上问答过程及使用情况。
 ===	Matlab实验过程
-写明实验步骤，简明扼要。
+如@bupt-logo ，写明实验步骤，简明扼要。 
+
+#figure(
+  image("../assets/bupt-logo.jpg",width: 30%),
+  caption: "BUPT校徽"
+) <bupt-logo>
 
 代码高亮样例
 ```matlab
